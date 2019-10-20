@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        ul {
+            margin: 0;
+            padding: 0;
+            width: 365px;
+            height: 550px;
+            margin: 0 auto;
+            border: 1px solid pink;
+        }
+
+        ul li {
+            position: relative;
+            float: left;
+            margin: 1px;
+            list-style: none;
+            width: 50px;
+            height: 550px;
+            background-color: rgb(234, 193, 250);
+            overflow: hidden;
+        }
+
+        ul li p {
+            position: absolute;
+            left: 0;
+            top: -30px;
+            margin: 0;
+            padding: 0;
+            width: 50px;
+            height: 30px;
+            line-height: 30px;
+            font-size: 12px;
+            z-index: 3;
+            text-align: center;
+            background-color: yellow;
+            color: #888;
+        }
+
+        li a {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            z-index: 50;
+            width: 50px;
+            height: 100px;
+            line-height: 100px;
+            background-color: #000;
+            color: blue;
+            font-size: 12px;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        li span {
+            position: absolute;
+            z-index: 51;
+            width: 50px;
+            height: 100px;
+            top: 550px;
+            left: 0;
+            background-color: yellow;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <ul>
+            <li>
+                <a href="javascript:void(0)">导航1</a>
+                <span></span>
+            </li>
+            <li>
+                <a href="javascript:void(0)">导航2</a>
+                <span></span>
+            </li>
+            <li>
+                <a href="javascript:void(0)">导航3</a>
+                <span></span>
+            </li>
+            <li>
+                <a href="javascript:void(0)">导航4</a>
+                <span></span>
+            </li>
+            <li>
+                <a href="javascript:void(0)">导航5</a>
+                <span></span>
+            </li>
+            <li>
+                <a href="javascript:void(0)">导航6</a>
+                <span></span>
+            </li>
+            <li>
+                <a href="javascript:void(0)">导航7</a>
+                <span></span>
+            </li>
+        </ul>
+        <audio src="mp3/0.mp3"></audio>
+        <audio src="mp3/1.mp3"></audio>
+        <audio src="mp3/2.mp3"></audio>
+        <audio src="mp3/3.mp3"></audio>
+        <audio src="mp3/4.mp3"></audio>
+        <audio src="mp3/5.mp3"></audio>
+        <audio src="mp3/6.mp3"></audio>
+    </div>
+    <script src="jquery-1.9.1.min.js"></script>
+    <script>
+        var num = 0;
+        var myRandom = function () {
+            var xxx = [1, 1, 5, 5, 6, 6, 5, 4, 4, 3, 3,
+                2, 2, 1, 5, 5, 4, 4, 3, 3, 2, 5, 5, 4, 4,
+                3, 3, 2, 1, 1, 5, 5, 6, 6, 5, 4, 4, 3, 3, 2, 2, 1];
+
+            // var num = parseInt(Math.random() * 7);
+            // $("<p>" + (num + 1) + "</p>").prependTo($('li')[num]).stop().animate({ top: 550 }, 2500, function () {
+            //     $(this).remove();
+            // });
+            num1 = xxx[num] - 1;
+            $("<p>" + xxx[num] + "</p>").prependTo($('li')[num1]).stop().animate({ top: 550 }, 1500, function () {
+                $(this).remove();
+            });
+            num++;
+            if(num==42){
+                num=0;
+            }
+        }
+
+        $(function () {
+            $('.box').on('click', function () {
+
+                var a = setInterval("myRandom()", 500);
+            });
+            $('.box li').mouseenter(function () {
+                $(this).children('span').stop().animate({ top: 515 }, 200);
+                var idx = $(this).index();
+                $('.box audio').get(idx).load();
+                $('.box audio').get(idx).play();
+            }).mouseleave(function () {
+                $(this).children('span').stop().animate({ top: 550 }, 200);
+            });
+
+            var flag = true;
+
+            $(document).on('keydown', function (e) {
+                if (flag) {
+                    flag = false;
+                    var key = e.keyCode;
+                    if (key >= 49 && key <= 55) {
+                        $('.box li').eq(key - 49).mouseenter();
+                        $('.box li').eq(key - 49).children('p:last').remove();
+                    }
+                }
+            });
+            $(document).on('keyup', function (e) {
+                flag = true;
+                var key = e.keyCode;
+                if (key >= 49 && key <= 55) {
+                    $('.box li').eq(key - 49).mouseleave();
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
